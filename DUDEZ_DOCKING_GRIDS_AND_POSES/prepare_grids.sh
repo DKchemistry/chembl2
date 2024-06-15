@@ -12,15 +12,16 @@ directories=(
 for directory in "${directories[@]}"; do
     # Change to the target directory
     cd "$directory" || { echo "Failed to change to directory $directory"; exit 1; }
-    
-    # Run prepwizard with corrected arguments using relative paths
-    $SCHRODINGER/utilities/prepwizard "complex.pdb" "prepared_complex.maegz" \
-        -disulfides -rehtreat \
-        -ms 1 -epik_pH 7.4 -epik_pHt 2.0 -s -propka_pH 7.4 -f 2005 -r 0.3 \
-        -watdist 5.0 -j "$directory" -HOST localhost:3
-    
-    echo "Preparation completed for ${directory}"
-    
+
+    # Run generate_glide_grids with the specified arguments
+    $SCHRODINGER/utilities/generate_glide_grids \
+        -rec_file "prepared_complex.maegz" \
+        -lig_asl "chain.name M" \
+        -j "$directory" \
+        -HOST localhost:1
+
+    echo "Grid generation completed for ${directory}"
+
     # Return to the original directory
     cd - > /dev/null
 done
