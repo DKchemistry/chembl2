@@ -16,13 +16,14 @@ for directory in "${directories[@]}"; do
     # Change to the target directory
     cd "$directory" || { echo "Failed to change to directory $directory"; exit 1; }
 
-    # Check for .in files
-    in_files=(glide_*.in)
-    if [ -e "${in_files[0]}" ]; then
-        echo "Found .in files in ${directory}: ${in_files[@]}"
+    # Find all .in files in the directory and its subdirectories
+    in_files=$(find . -name 'glide_*.in')
+    if [ -n "$in_files" ]; then
+        echo "Found .in files in ${directory}:"
+        echo "$in_files"
         
-        # Find all .in files in the directory
-        for in_file in glide_*.in; do
+        # Process each .in file found
+        for in_file in $in_files; do
             # Extract the basename of the input sdf file from the .in filename
             base_sdf=$(basename "$in_file" .in | sed 's/^glide_//')
             job_name="${directory}_${base_sdf}"
