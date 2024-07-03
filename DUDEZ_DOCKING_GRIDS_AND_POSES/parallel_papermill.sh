@@ -21,3 +21,9 @@ python merge_datasets.py
 
 # Run validation
 python validate_merger.py
+
+echo "Run python merged_data/analyze_torsion_data.py in an interactive window to see data"
+
+# Run this code in an interactive window to see data, its still a WIP 
+# So I don't want to force it to run
+#python merged_data/analyze_torsion_data.py
